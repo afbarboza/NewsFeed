@@ -3,9 +3,12 @@ package com.newsapi.newsfeed.view
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,6 +29,10 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
+
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
+
         val viewModel by viewModels<TopHeadlinesPageViewModel> (
             factoryProducer = {Injection.provideTopHeadlinesPageViewModelFactory(this)}
         )
@@ -43,6 +50,16 @@ class MainActivity : AppCompatActivity() {
                 })
             }
         }
+
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                articleAdapter.loadStateFlow.collect {
+                    binding.pbHeadlineLoad.isVisible = it.source.append is LoadState.Loading
+                }
+            }
+        }
+
     }
 
     private fun initRecyclerView(adapter: ArticleAdapter) {

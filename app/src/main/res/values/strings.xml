@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">NewsFeed</string>
+    <string name="placeholder_headline_title">SpaceX Starship: Elon Musks firm postpones launch of biggest rocket ever</string>
+    <string name="placeholder_headline_description">El Departamento de Integridad de la Real Federación Española de Fútbol (RFEF) ha iniciado un requerimiento de información reservada tanto a los responsables del Comité...</string>
 </resources>

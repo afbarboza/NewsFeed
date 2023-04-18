@@ -20,13 +20,13 @@ android {
     buildTypes {
 
         debug {
-            buildConfigField('String', 'API_KEY', '\"5b665553755349acb7873af2b9e54c8e\"')
+            buildConfigField('String', 'API_KEY', '\"512d5295516844fca4f4bcd7eaf4c9b8\"')
             minifyEnabled false
             debuggable true
         }
 
         release {
-            buildConfigField('String', 'API_KEY', '\"5b665553755349acb7873af2b9e54c8e\"')
+            buildConfigField('String', 'API_KEY', '\"512d5295516844fca4f4bcd7eaf4c9b8\"')
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -89,6 +89,9 @@ dependencies {
     /* paging dependencies */
     def paging_version = "3.1.1"
     implementation "androidx.paging:paging-runtime:$paging_version"
+
+    /* glide dependency */
+    implementation 'com.github.bumptech.glide:glide:4.15.1'
 
     /* testing dependencies */
     testImplementation 'junit:junit:4.13.2'
