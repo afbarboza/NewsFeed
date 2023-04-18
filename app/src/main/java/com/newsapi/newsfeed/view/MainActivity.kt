@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         viewModel.newsProviderName.observe(this) {
-            supportActionBar?.title = it
+            binding.tvSourceName.text = it
         }
 
         viewModel.getHeadlinesPagingSource()
