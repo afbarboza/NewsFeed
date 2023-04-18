@@ -6,13 +6,14 @@ import com.newsapi.newsfeed.BuildConfig
 import com.newsapi.newsfeed.model.Article
 import com.newsapi.newsfeed.networking.RetrofitInstance
 import com.newsapi.newsfeed.networking.TopHeadlinesPageService
+import kotlinx.coroutines.delay
 
 class HeadlinesPagingSource: PagingSource<Int, Article>() {
 
     /**
      * The News Api paging starts at 1 (a page of value 0 will return the same as 1)
      */
-    val PAGE_SIZE = 5
+    val PAGE_SIZE = 3
     private val STARTING_PAGE = 1
 
     override fun getRefreshKey(state: PagingState<Int, Article>): Int? {
@@ -23,6 +24,10 @@ class HeadlinesPagingSource: PagingSource<Int, Article>() {
         return try {
 
             val nextPageNumber = params.key ?: STARTING_PAGE
+
+            if (nextPageNumber != STARTING_PAGE) {
+                delay(3_000L)
+            }
 
             val response = topHeadlinesPageService
                 .fetchTopHeadlines(
