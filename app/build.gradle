@@ -20,13 +20,13 @@ android {
     buildTypes {
 
         debug {
-            buildConfigField('String', 'API_KEY', '\"512d5295516844fca4f4bcd7eaf4c9b8\"')
+            buildConfigField('String', 'API_KEY', '\"1af9ad2447214a89a227b7da3bec87a7\"')
             minifyEnabled false
             debuggable true
         }
 
         release {
-            buildConfigField('String', 'API_KEY', '\"512d5295516844fca4f4bcd7eaf4c9b8\"')
+            buildConfigField('String', 'API_KEY', '\"1af9ad2447214a89a227b7da3bec87a7\"')
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }

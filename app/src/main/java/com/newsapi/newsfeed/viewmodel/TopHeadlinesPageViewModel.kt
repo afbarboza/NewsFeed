@@ -6,9 +6,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
+import com.newsapi.newsfeed.BuildConfig
 import com.newsapi.newsfeed.model.Article
 import com.newsapi.newsfeed.model.TopHeadlinesPage
 import com.newsapi.newsfeed.repository.TopHeadlinesPageRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class TopHeadlinesPageViewModel(
     private val repository: TopHeadlinesPageRepository
@@ -21,8 +26,24 @@ class TopHeadlinesPageViewModel(
             .liveData
             .cachedIn(viewModelScope)
 
+        private val _newsProviderName: MutableLiveData<String> = MutableLiveData()
+        val newsProviderName:  LiveData<String> = _newsProviderName
 
     fun getHeadlinesPagingSource() {
-        repository.getHeadlinesPagingSource()
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = repository.getAllSources()
+            if (response.body() != null) {
+                val allSources = response.body()!!.sources
+                if (!allSources.isNullOrEmpty()) {
+                    val currentSource = allSources.first {
+                        it.id == BuildConfig.source_id
+                    }
+
+                    withContext(Dispatchers.Main) {
+                        _newsProviderName.value = currentSource.name
+                    }
+                }
+            }
+        }
     }
 }

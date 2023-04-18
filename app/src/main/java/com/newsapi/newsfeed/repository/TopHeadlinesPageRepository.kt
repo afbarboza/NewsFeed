@@ -7,5 +7,12 @@ import com.newsapi.newsfeed.networking.TopHeadlinesPageService
 import retrofit2.Response
 
 class TopHeadlinesPageRepository {
-    fun getHeadlinesPagingSource() = HeadlinesPagingSource()
+
+    private var topHeadlinesPageService:  TopHeadlinesPageService = RetrofitInstance
+        .getInstance()
+        .create(TopHeadlinesPageService::class.java)
+
+    fun getHeadlinesPagingSource() = HeadlinesPagingSource(topHeadlinesPageService)
+
+    suspend fun getAllSources() = topHeadlinesPageService.fetchAllSources(BuildConfig.API_KEY)
 }

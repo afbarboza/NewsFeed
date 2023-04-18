@@ -8,7 +8,7 @@ import com.newsapi.newsfeed.networking.RetrofitInstance
 import com.newsapi.newsfeed.networking.TopHeadlinesPageService
 import kotlinx.coroutines.delay
 
-class HeadlinesPagingSource: PagingSource<Int, Article>() {
+class HeadlinesPagingSource(private val topHeadlinesPageService:  TopHeadlinesPageService): PagingSource<Int, Article>() {
 
     /**
      * The News Api paging starts at 1 (a page of value 0 will return the same as 1)
@@ -46,10 +46,4 @@ class HeadlinesPagingSource: PagingSource<Int, Article>() {
             LoadResult.Error(e)
         }
     }
-
-
-    private var topHeadlinesPageService = RetrofitInstance
-        .getInstance()
-        .create(TopHeadlinesPageService::class.java)
-
 }

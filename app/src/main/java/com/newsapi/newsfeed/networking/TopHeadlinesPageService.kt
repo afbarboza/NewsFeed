@@ -1,5 +1,6 @@
 package com.newsapi.newsfeed.networking
 
+import com.newsapi.newsfeed.model.SourcesList
 import com.newsapi.newsfeed.model.TopHeadlinesPage
 import retrofit2.Response
 import retrofit2.http.GET
@@ -13,4 +14,11 @@ interface TopHeadlinesPageService {
         @Query("page") page: Int,
         @Query("pageSize") pageSize: Int
     ): Response<TopHeadlinesPage>
+
+
+    @GET("sources")
+    suspend fun fetchAllSources(
+        @Query("apiKey") apiKey: String
+    ) : Response<SourcesList>
+
 }

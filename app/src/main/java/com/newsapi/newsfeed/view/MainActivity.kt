@@ -60,6 +60,11 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        viewModel.newsProviderName.observe(this) {
+            supportActionBar?.title = it
+        }
+
+        viewModel.getHeadlinesPagingSource()
     }
 
     private fun initRecyclerView(adapter: ArticleAdapter) {
