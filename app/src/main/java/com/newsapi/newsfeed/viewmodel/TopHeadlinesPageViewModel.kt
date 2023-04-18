@@ -15,10 +15,11 @@ class TopHeadlinesPageViewModel(
 )
     : ViewModel() {
         val items: LiveData<PagingData<Article>> = Pager(
-            config = PagingConfig(pageSize = PAGE_SIZE, enablePlaceholders = false),
+            config = PagingConfig(pageSize = PAGE_SIZE, prefetchDistance = 2, enablePlaceholders = false),
             pagingSourceFactory = { repository.getHeadlinesPagingSource() }
         )
             .liveData
+            .cachedIn(viewModelScope)
 
 
     fun getHeadlinesPagingSource() {

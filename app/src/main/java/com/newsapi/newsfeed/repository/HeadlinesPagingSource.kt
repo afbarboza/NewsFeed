@@ -12,14 +12,11 @@ class HeadlinesPagingSource: PagingSource<Int, Article>() {
     /**
      * The News Api paging starts at 1 (a page of value 0 will return the same as 1)
      */
-    val PAGE_SIZE = 10
+    val PAGE_SIZE = 5
     private val STARTING_PAGE = 1
 
     override fun getRefreshKey(state: PagingState<Int, Article>): Int? {
-        return state.anchorPosition?.let { anchorPosition ->
-            val anchorPage = state.closestPageToPosition(anchorPosition)
-            anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
-         }
+        return null
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Article> {
@@ -38,7 +35,7 @@ class HeadlinesPagingSource: PagingSource<Int, Article>() {
              LoadResult.Page(
                 data = response.body()!!.articles!!,
                 prevKey = null,
-                nextKey = params.key
+                nextKey = nextPageNumber + 1
             )
         } catch (e: Exception) {
             LoadResult.Error(e)
