@@ -12,4 +12,5 @@
     <color name="app_primary">#2596AF</color>
     <color name="card_font_color">#848484</color>
     <color name="status_bar_color">#1e798d</color>
+    <color name="background_color">#F2F2F2</color>
 </resources>

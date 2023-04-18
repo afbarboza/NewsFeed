@@ -70,7 +70,5 @@ class MainActivity : AppCompatActivity() {
     private fun initRecyclerView(adapter: ArticleAdapter) {
         binding.rvNewsList.adapter = adapter
         binding.rvNewsList.layoutManager = LinearLayoutManager(binding.rvNewsList.context)
-        val decoration = DividerItemDecoration(binding.rvNewsList.context, DividerItemDecoration.VERTICAL)
-        binding.rvNewsList.addItemDecoration(decoration)
     }
 }
