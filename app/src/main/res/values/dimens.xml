@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="size_headline_title">16sp</dimen>
+    <dimen name="size_headline_description">14sp</dimen>
+    <dimen name="size_headline_published_at">12sp</dimen>
+</resources>
