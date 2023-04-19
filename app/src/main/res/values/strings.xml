@@ -4,4 +4,5 @@
     <string name="placeholder_headline_description">El Departamento de Integridad de la Real Federación Española de Fútbol (RFEF) ha iniciado un requerimiento de información reservada tanto a los responsables del Comité...</string>
     <string name="placeholder_published_at">Published at 04/04/2023 at 16h00</string>
     <string name="placeholder_headline_published_at">Published at 04/04/2023 at 16h00</string>
+    <string name="published_on">Published on</string>
 </resources>
