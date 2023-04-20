@@ -117,7 +117,7 @@ class RetrofitInstanceTest {
      * For more information, please refer to:
      * @see https://rommansabbir.com/android-network-calling-with-retrofit-and-unit-testing
      */
-    private inner class TopHeadlinesPageServiceImpl
+    private class TopHeadlinesPageServiceImpl
     constructor(private val retrofit: Retrofit) : TopHeadlinesPageService {
 
         private val endpoint by lazy {
