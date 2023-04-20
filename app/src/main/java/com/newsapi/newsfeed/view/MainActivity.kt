@@ -3,6 +3,7 @@ package com.newsapi.newsfeed.view
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
@@ -23,12 +24,16 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding:  ActivityMainBinding
     private lateinit var topHeadlinesPageViewModel: TopHeadlinesPageViewModel
 
+    @VisibleForTesting
+    lateinit var rvNewsList: RecyclerView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
 
+        rvNewsList = binding.rvNewsList
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
