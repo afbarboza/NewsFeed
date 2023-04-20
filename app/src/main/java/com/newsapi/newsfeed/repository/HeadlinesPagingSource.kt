@@ -13,8 +13,10 @@ class HeadlinesPagingSource(private val topHeadlinesPageService:  TopHeadlinesPa
     /**
      * The News Api paging starts at 1 (a page of value 0 will return the same as 1)
      */
-    val PAGE_SIZE = 3
-    private val STARTING_PAGE = 1
+    companion object {
+        val PAGE_SIZE = 3
+        val STARTING_PAGE = 1
+    }
 
     override fun getRefreshKey(state: PagingState<Int, Article>): Int? {
         return null
