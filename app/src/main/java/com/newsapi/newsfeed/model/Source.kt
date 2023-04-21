@@ -1,7 +1,9 @@
 package com.newsapi.newsfeed.model
 
-import org.intellij.lang.annotations.Language
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class Source(
     val id: String,
     val name: String,
@@ -10,4 +12,4 @@ data class Source(
     val category: String? = "",
     val language: String? = "",
     val country: String? = ""
-)
+) : Parcelable

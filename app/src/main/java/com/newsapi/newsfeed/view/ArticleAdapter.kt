@@ -15,6 +15,7 @@ class ArticleAdapter: PagingDataAdapter<Article, ArticleViewHolder>(DIFF_ITEM) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleViewHolder {
         val layoutInflater: LayoutInflater = LayoutInflater.from(parent.context)
+
         return ArticleViewHolder(
             ArticleViewHolderBinding.inflate(
                 layoutInflater,
@@ -33,7 +34,7 @@ class ArticleAdapter: PagingDataAdapter<Article, ArticleViewHolder>(DIFF_ITEM) {
             }
 
             override fun areContentsTheSame(oldItem: Article, newItem: Article): Boolean {
-                return oldItem == newItem
+                return oldItem.equals(newItem)
             }
         }
     }

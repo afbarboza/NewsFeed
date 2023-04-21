@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-parcelize'
 }
 
 android {
@@ -20,13 +21,13 @@ android {
     buildTypes {
 
         debug {
-            buildConfigField('String', 'API_KEY', '\"1a179cee721a422db8a5a40477fa2b2e\"')
+            buildConfigField('String', 'API_KEY', '\"d0019a9d9781495e841210545828ebb3\"')
             minifyEnabled false
             debuggable true
         }
 
         release {
-            buildConfigField('String', 'API_KEY', '\"1a179cee721a422db8a5a40477fa2b2e\"')
+            buildConfigField('String', 'API_KEY', '\"d0019a9d9781495e841210545828ebb3\"')
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -50,6 +51,12 @@ android {
             dimension 'env'
             buildConfigField('String', 'source_id', '\"el-mundo\"')
         }
+
+        cnnNews {
+            dimension 'env'
+            buildConfigField('String', 'source_id', '\"cnn\"')
+        }
+
     }
 
     buildFeatures {

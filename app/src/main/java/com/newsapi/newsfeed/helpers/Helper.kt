@@ -14,6 +14,7 @@ class Helper {
         private const val DATE_PATTERN = "yyyy-MM-dd'T'HH:mm"
         private const val DATE_START = 0
         private const val DATE_END = 16
+        const val ARTICLE_PARAM = "article"
 
         fun formatDate(dateStr: String): String {
             try {
