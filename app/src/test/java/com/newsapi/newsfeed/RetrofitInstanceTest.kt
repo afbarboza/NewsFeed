@@ -43,10 +43,10 @@ class RetrofitInstanceTest {
         runBlocking {
             val response = service.fetchAllSources(BuildConfig.API_KEY)
 
-            val successBody = response.body()
             val isSuccessfull = response.isSuccessful
 
             if (isSuccessfull) {
+                val successBody = response.body()
                 assert(successBody != null)
                 assert(isSourceCorrect(successBody?.sources))
             } else {

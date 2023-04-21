@@ -23,15 +23,13 @@ class HeadlinesPagingSourceTest {
 
     @Test
     fun `load returns page when on successful load of item keyed data`() = runTest {
-
-        val retrofit = RetrofitInstance.getInstance()
         val retrofitInstance = TopHeadlinesPageServiceImpl(
             RetrofitInstance.getInstance()
         )
 
         val pagingSource = HeadlinesPagingSource(retrofitInstance)
 
-        val expectedResponse = TopHeadlinesPageServiceImpl(retrofit).fetchTopHeadlines(
+        val expectedResponse = retrofitInstance.fetchTopHeadlines(
             BuildConfig.API_KEY,
             BuildConfig.source_id,
             HeadlinesPagingSource.STARTING_PAGE,
@@ -59,6 +57,18 @@ class HeadlinesPagingSourceTest {
     class TopHeadlinesPageServiceImpl
     constructor(private val retrofit: Retrofit) : TopHeadlinesPageService {
 
+        private var successResponse: Response<TopHeadlinesPage>
+
+        init {
+            successResponse = Response.success<TopHeadlinesPage>(
+                TopHeadlinesPage(
+                    mutableListOf<Article>(mockNewArticle(), mockNewArticle()),
+                    "ok",
+                    2
+                )
+            )
+        }
+
         private val endpoint by lazy {
             retrofit.create(TopHeadlinesPageService::class.java)
         }
@@ -69,21 +79,11 @@ class HeadlinesPagingSourceTest {
             page: Int,
             pageSize: Int
         ): Response<TopHeadlinesPage> {
-            return mockResponse()
+            return successResponse
         }
 
         override suspend fun fetchAllSources(apiKey: String): Response<SourcesList> {
             return endpoint.fetchAllSources(apiKey)
-        }
-
-        private fun mockResponse(): Response<TopHeadlinesPage> {
-            return Response.success<TopHeadlinesPage>(
-                TopHeadlinesPage(
-                    mutableListOf<Article>(mockNewArticle(), mockNewArticle()),
-                    "ok",
-                    2
-                )
-            )
         }
 
         private fun mockNewArticle(): Article {
