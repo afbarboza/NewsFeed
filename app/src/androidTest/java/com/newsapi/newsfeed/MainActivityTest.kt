@@ -68,8 +68,5 @@ class MainActivityTest {
 
     }
 
-    private fun makeActivityWait() {
-        Thread.sleep(2000)
-    }
-
+    private fun makeActivityWait() = Thread.sleep(2000)
 }
