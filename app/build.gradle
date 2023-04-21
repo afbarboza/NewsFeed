@@ -62,6 +62,15 @@ android {
     buildFeatures {
         viewBinding true
     }
+
+    android {
+        testOptions {
+            unitTests {
+                includeAndroidResources = true
+            }
+        }
+    }
+
 }
 
 dependencies {
@@ -115,7 +124,7 @@ dependencies {
     testImplementation "androidx.arch.core:core-testing:2.2.0"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
     testImplementation 'org.mockito:mockito-core:3.8.0'
-
-
+    testImplementation 'org.mockito:mockito-inline:2.13.0'
+    testImplementation 'org.robolectric:robolectric:4.9'
 
 }
