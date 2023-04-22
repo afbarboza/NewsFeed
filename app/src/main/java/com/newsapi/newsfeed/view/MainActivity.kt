@@ -2,6 +2,7 @@ package com.newsapi.newsfeed.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatDelegate
@@ -47,6 +48,21 @@ class MainActivity : AppCompatActivity() {
         val articleAdapter = ArticleAdapter()
         initRecyclerView(articleAdapter)
 
+
+        articleAdapter.addLoadStateListener {loadState ->
+            val errorState = when {
+                loadState.append is LoadState.Error -> loadState.append as LoadState.Error
+                loadState.prepend is LoadState.Error ->  loadState.prepend as LoadState.Error
+                loadState.refresh is LoadState.Error -> loadState.refresh as LoadState.Error
+                else -> null
+            }
+
+            errorState?.let {
+                Toast.makeText(this, "XIIIIII DEU RUIM!", Toast.LENGTH_LONG).show()
+            }
+
+        }
+
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 listItems.observe(this@MainActivity, {
@@ -70,7 +86,7 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.getHeadlinesPagingSource()
     }
-
+    
     private fun initRecyclerView(adapter: ArticleAdapter) {
         binding.rvNewsList.adapter = adapter
         binding.rvNewsList.layoutManager = LinearLayoutManager(binding.rvNewsList.context)

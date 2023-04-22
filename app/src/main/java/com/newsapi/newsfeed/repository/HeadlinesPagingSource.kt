@@ -5,7 +5,6 @@ import androidx.paging.PagingState
 import com.newsapi.newsfeed.BuildConfig
 import com.newsapi.newsfeed.model.Article
 import com.newsapi.newsfeed.model.TopHeadlinesPage
-import com.newsapi.newsfeed.networking.RetrofitInstance
 import com.newsapi.newsfeed.networking.TopHeadlinesPageService
 import kotlinx.coroutines.delay
 import retrofit2.Response
@@ -43,11 +42,15 @@ class HeadlinesPagingSource(private val topHeadlinesPageService:  TopHeadlinesPa
                     nextPageNumber,
                     PAGE_SIZE)
 
+            if (isErrorResponse(response)) {
+                throw Exception("")
+            }
+
             var nextKey: Int? = null
-            if (!hasReachedEndOfList(response)) {
+            if (!hasReachedAllPages(response)) {
                 nextKey = nextPageNumber + 1
             }
-            
+
             val list = getListOfHeadlines(response)
              LoadResult.Page(
                 data = list,
@@ -59,7 +62,7 @@ class HeadlinesPagingSource(private val topHeadlinesPageService:  TopHeadlinesPa
         }
     }
 
-    private fun hasReachedEndOfList(response: Response<TopHeadlinesPage>): Boolean {
+    private fun hasReachedAllPages(response: Response<TopHeadlinesPage>): Boolean {
         val body = response.body()
         val totalResults = body?.totalResults
         val listOfHeadlines = body?.articles
@@ -86,4 +89,11 @@ class HeadlinesPagingSource(private val topHeadlinesPageService:  TopHeadlinesPa
            mutableListOf()
        }
     }
+
+    private fun isErrorResponse(response: Response<TopHeadlinesPage>): Boolean {
+        return !response.isSuccessful
+                || response.errorBody() != null
+                || response.body()?.status != "ok"
+    }
+
 }
