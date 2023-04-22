@@ -4,9 +4,12 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.newsapi.newsfeed.BuildConfig
 import com.newsapi.newsfeed.model.Article
+import com.newsapi.newsfeed.model.TopHeadlinesPage
 import com.newsapi.newsfeed.networking.RetrofitInstance
 import com.newsapi.newsfeed.networking.TopHeadlinesPageService
 import kotlinx.coroutines.delay
+import retrofit2.Response
+import kotlin.math.ceil
 
 class HeadlinesPagingSource(private val topHeadlinesPageService:  TopHeadlinesPageService): PagingSource<Int, Article>() {
 
@@ -18,6 +21,8 @@ class HeadlinesPagingSource(private val topHeadlinesPageService:  TopHeadlinesPa
         val STARTING_PAGE = 1
     }
 
+    private var nextPageNumber: Int = STARTING_PAGE
+
     override fun getRefreshKey(state: PagingState<Int, Article>): Int? {
         return null
     }
@@ -25,7 +30,7 @@ class HeadlinesPagingSource(private val topHeadlinesPageService:  TopHeadlinesPa
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Article> {
         return try {
 
-            val nextPageNumber = params.key ?: STARTING_PAGE
+            nextPageNumber = params.key ?: STARTING_PAGE
 
             if (nextPageNumber != STARTING_PAGE) {
                 delay(3_000L)
@@ -38,14 +43,40 @@ class HeadlinesPagingSource(private val topHeadlinesPageService:  TopHeadlinesPa
                     nextPageNumber,
                     PAGE_SIZE)
 
+            var nextKey: Int? = null
+            if (!hasReachedEndOfList(response)) {
+                nextKey = nextPageNumber + 1
+            }
+
             /* TODO handle empty body and empty list of articles */
              LoadResult.Page(
                 data = response.body()!!.articles!!,
                 prevKey = null,
-                nextKey = nextPageNumber + 1
+                nextKey = nextKey
             )
         } catch (e: Exception) {
             LoadResult.Error(e)
         }
     }
+
+    private fun hasReachedEndOfList(response: Response<TopHeadlinesPage>): Boolean {
+        val body = response.body()
+        val totalResults = body?.totalResults
+        val listOfHeadlines = body?.articles
+
+        if (body == null || listOfHeadlines.isNullOrEmpty()) {
+            return true
+        }
+
+        val numberOfNecessaryPages = getNumberOfNecessaryPages(totalResults ?: 0)
+        return nextPageNumber > numberOfNecessaryPages
+    }
+
+    private fun getNumberOfNecessaryPages(numberOfHeadlinesAvailable: Int): Int {
+        val fNumberOfHeadlinesAvailable = numberOfHeadlinesAvailable.toFloat()
+        val fPageSize = PAGE_SIZE.toFloat()
+        val fNecessaryPages: Float = fNumberOfHeadlinesAvailable / fPageSize
+        return ceil(fNecessaryPages).toInt()
+    }
+
 }
