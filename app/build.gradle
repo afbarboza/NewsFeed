@@ -57,6 +57,16 @@ android {
             buildConfigField('String', 'source_id', '\"cnn\"')
         }
 
+        footballItalia {
+            dimension 'env'
+            buildConfigField('String', 'source_id', '\"football-italia\"')
+        }
+
+        hackerNews {
+            dimension 'env'
+            buildConfigField('String', 'source_id', '\"hacker-news\"')
+        }
+
     }
 
     buildFeatures {
