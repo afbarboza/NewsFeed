@@ -19,7 +19,7 @@ import retrofit2.Retrofit
  *  @param RetrofitInstance
  *  @param TopHeadlinesPageService
  *
- *  Please, be aware that this class doest not mock any data as it perform
+ *  Please, be aware that this class doest not mock any data as it performs
  *  real API endpoint calls. Therefore, it relies on internet connectivity.
  */
 class RetrofitInstanceTest {

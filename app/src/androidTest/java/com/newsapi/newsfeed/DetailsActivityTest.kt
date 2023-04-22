@@ -6,14 +6,18 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers
-import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.newsapi.newsfeed.helpers.Helper
 import com.newsapi.newsfeed.model.Article
 import com.newsapi.newsfeed.model.Source
 import com.newsapi.newsfeed.view.DetailsActivity
+import org.hamcrest.CoreMatchers
+import org.hamcrest.CoreMatchers.containsString
+import org.hamcrest.CoreMatchers.not
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -22,7 +26,8 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4ClassRunner::class)
 class DetailsActivityTest {
 
-    private val intent = Intent(ApplicationProvider.getApplicationContext(), DetailsActivity::class.java).apply {
+    private val intent = Intent(ApplicationProvider.getApplicationContext(),
+                                DetailsActivity::class.java).apply {
         val extras = Bundle()
         extras.putParcelable(Helper.ARTICLE_PARAM, mockNewArticle())
         putExtras(extras)
@@ -38,7 +43,27 @@ class DetailsActivityTest {
         makeActivityWait()
 
         onView(withId(R.id.detailsToolbar))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+            .check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun whenStartActivityWithIntent_thenContentIsCorrectlyDisplayed() {
+        makeActivityWait()
+
+        val article = mockNewArticle()
+
+        onView(withId(R.id.tvHeadlineDetailsTitle))
+            .check(matches(isDisplayed()))
+            .check(matches(withText(containsString(article.title))))
+
+        onView(withId(R.id.tvHeadlineDetailsDescription))
+            .check(matches(isDisplayed()))
+            .check(matches(withText(containsString(article.description))))
+
+        /* when content is null, then textview should be empty */
+        onView(withId(R.id.tvHeadlineDetailsContent))
+            .check(matches(withText(containsString(""))))
+
     }
 
     private fun makeActivityWait() = Thread.sleep(2000)
