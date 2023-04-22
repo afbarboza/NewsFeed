@@ -47,10 +47,10 @@ class HeadlinesPagingSource(private val topHeadlinesPageService:  TopHeadlinesPa
             if (!hasReachedEndOfList(response)) {
                 nextKey = nextPageNumber + 1
             }
-
-            /* TODO handle empty body and empty list of articles */
+            
+            val list = getListOfHeadlines(response)
              LoadResult.Page(
-                data = response.body()!!.articles!!,
+                data = list,
                 prevKey = null,
                 nextKey = nextKey
             )
@@ -79,4 +79,11 @@ class HeadlinesPagingSource(private val topHeadlinesPageService:  TopHeadlinesPa
         return ceil(fNecessaryPages).toInt()
     }
 
+    private fun getListOfHeadlines(response: Response<TopHeadlinesPage>): List<Article> {
+       return if (response.body() != null && response.body()?.articles != null) {
+           response.body()?.articles!!
+       } else {
+           mutableListOf()
+       }
+    }
 }
