@@ -3,6 +3,7 @@ package com.newsapi.newsfeed.repository
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.newsapi.newsfeed.BuildConfig
+import com.newsapi.newsfeed.helpers.Helper.Companion.convertStringDateToTimestamp
 import com.newsapi.newsfeed.model.Article
 import com.newsapi.newsfeed.model.TopHeadlinesPage
 import com.newsapi.newsfeed.networking.TopHeadlinesPageService
@@ -16,7 +17,7 @@ class HeadlinesPagingSource(private val topHeadlinesPageService:  TopHeadlinesPa
      * The News Api paging starts at 1 (a page of value 0 will return the same as 1)
      */
     companion object {
-        val PAGE_SIZE = 3
+        val PAGE_SIZE = 10
         val STARTING_PAGE = 1
     }
 
@@ -52,6 +53,10 @@ class HeadlinesPagingSource(private val topHeadlinesPageService:  TopHeadlinesPa
             }
 
             val list = getListOfHeadlines(response)
+            list.sortByDescending {
+                convertStringDateToTimestamp(it.publishedAt)
+            }
+
              LoadResult.Page(
                 data = list,
                 prevKey = null,
@@ -82,7 +87,7 @@ class HeadlinesPagingSource(private val topHeadlinesPageService:  TopHeadlinesPa
         return ceil(fNecessaryPages).toInt()
     }
 
-    private fun getListOfHeadlines(response: Response<TopHeadlinesPage>): List<Article> {
+    private fun getListOfHeadlines(response: Response<TopHeadlinesPage>): MutableList<Article> {
        return if (response.body() != null && response.body()?.articles != null) {
            response.body()?.articles!!
        } else {
