@@ -1,6 +1,7 @@
 package com.newsapi.newsfeed
 
 import android.content.Context
+import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET
 import android.net.NetworkCapabilities.NET_CAPABILITY_VALIDATED
@@ -8,6 +9,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.newsapi.newsfeed.databinding.ActivitySplashScreenBinding
+import com.newsapi.newsfeed.view.MainActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class SplashScreenActivity : AppCompatActivity() {
 
@@ -22,6 +28,16 @@ class SplashScreenActivity : AppCompatActivity() {
         val isConnected = isInternetAvailable()
         if (!isConnected) {
             displayErrorMessage()
+        } else {
+            displaySplashScreenAnimation()
+        }
+    }
+
+    private fun displaySplashScreenAnimation() {
+        /*TODO setup splash screen animation */
+        CoroutineScope(Dispatchers.Main).launch {
+            delay(2500)
+            navigateToHeadlineNews()
         }
     }
 
@@ -40,6 +56,11 @@ class SplashScreenActivity : AppCompatActivity() {
 
     private fun displayErrorMessage() {
         binding.tvErrorInternet.visibility = View.VISIBLE
+    }
+
+    private fun navigateToHeadlineNews() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
     }
 
 }
