@@ -7,5 +7,5 @@
     <string name="published_on">Published on</string>
     <string name="placeholder_headline_content">Yes, the Netflix comedy Mo is inspired by the life of its co-creator and star Mo Amer, but two things that happen to his character, Amer is quick to clarify, were absolutely fictional."I was never… [+4347 chars]</string>
     <string name="error_loading_data">There is an error while trying to load the data. Please, try again.</string>
-    <string name="error_internet_connectivity">Oops.. looks like you don\'t have an internet connection\n \n Please, try again.</string>
+    <string name="error_internet_connectivity">Oops.. looks like you don\'t have an internet connection.\n \n Please, try again.</string>
 </resources>
