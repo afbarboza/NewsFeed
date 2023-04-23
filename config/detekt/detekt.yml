@@ -108,11 +108,11 @@ complexity:
     active: true
     threshold: 150
   LongMethod:
-    active: true
+    active: false
     threshold: 10
   NestedBlockDepth:
     active: true
-    threshold: 1
+    threshold: 3
   ReplaceSafeCallChainWithRun:
     active: false
   StringLiteralDuplication:

@@ -19,8 +19,6 @@ import retrofit2.Retrofit
 
 @ExperimentalCoroutinesApi
 class HeadlinesPagingSourceTest {
-
-    @Suppress("LongMethod")
     @Test
     fun `load returns page when on successful load of item keyed data`() = runTest {
         val retrofitInstance = TopHeadlinesPageServiceImpl(

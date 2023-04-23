@@ -18,7 +18,6 @@ class Helper {
 
         const val INVALID_TIMESTAMP: Long = -1
 
-        @Suppress("LongMethod")
         fun formatDate(dateStr: String): String {
             return try {
                 val dateTime = convertStringToLocalDateTime(dateStr)
@@ -28,7 +27,6 @@ class Helper {
             }
         }
 
-        @Suppress("LongMethod")
         fun convertStringDateToTimestamp(dateStr: String): Long {
             return try {
                 val dateTime = convertStringToLocalDateTime(dateStr)

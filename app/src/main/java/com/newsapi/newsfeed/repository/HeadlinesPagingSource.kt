@@ -21,7 +21,6 @@ class HeadlinesPagingSource(private val topHeadlinesPageService:
         return null
     }
 
-    @Suppress("LongMethod")
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Article> {
         return try {
             updatePageNumber(params)
@@ -73,9 +72,6 @@ class HeadlinesPagingSource(private val topHeadlinesPageService:
             API_PAGE_SIZE
     )
 
-
-
-    @Suppress("LongMethod, ReturnCount")
     private fun hasReachedAllPages(response: Response<TopHeadlinesPage>): Boolean {
         val body = response.body()
         val totalResults = body?.totalResults

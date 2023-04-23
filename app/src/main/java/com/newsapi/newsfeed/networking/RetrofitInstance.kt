@@ -18,7 +18,6 @@ object RetrofitInstance {
         this.addInterceptor(interceptor)
     }.build()
 
-    @Suppress("LongMethod")
     fun getInstance() : Retrofit {
         if (retrofitInstance == null) {
             retrofitInstance = Retrofit.Builder()

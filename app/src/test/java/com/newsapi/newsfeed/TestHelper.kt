@@ -4,7 +4,7 @@ import com.newsapi.newsfeed.model.Article
 import com.newsapi.newsfeed.model.Source
 
 object TestHelper {
-    @Suppress("LongMethod")
+
     fun mockNewArticle(): Article {
         return Article(
             "Argaam",
@@ -18,7 +18,6 @@ object TestHelper {
         )
     }
 
-    @Suppress("LongMethod")
     fun mockNewSource(): Source {
         return Source(
             "australian-financial-review",

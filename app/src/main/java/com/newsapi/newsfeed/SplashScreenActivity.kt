@@ -45,7 +45,6 @@ class SplashScreenActivity : AppCompatActivity() {
         }
     }
 
-    @Suppress("LongMethod")
     private fun isInternetAvailable(): Boolean {
         val capability = getInternetCapability()
 
