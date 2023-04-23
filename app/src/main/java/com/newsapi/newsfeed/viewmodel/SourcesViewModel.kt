@@ -53,13 +53,14 @@ class SourcesViewModel(
 
     private suspend fun setNewsProviderName(allSources: List<Source>) {
         withContext(Dispatchers.Main) {
-            _errorStatus.value = false
-
-            val currentSource = allSources.first {
-                it.id == BuildConfig.source_id
+            try {
+                val currentSource = allSources.first {
+                    it.id == BuildConfig.source_id
+                }
+                _newsProviderName.value = currentSource.name
+            } catch (e: NoSuchElementException) {
+                _newsProviderName.value = ""
             }
-
-            _newsProviderName.value = currentSource.name
         }
     }
 
