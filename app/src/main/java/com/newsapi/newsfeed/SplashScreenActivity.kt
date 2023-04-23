@@ -9,6 +9,7 @@ import android.net.NetworkCapabilities.NET_CAPABILITY_VALIDATED
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
@@ -36,12 +37,19 @@ class SplashScreenActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
+        displaySplashScreenIcon()
+
         val isConnected = isInternetAvailable()
         if (!isConnected) {
             displayErrorMessage()
         } else {
             displaySplashScreenAnimation()
         }
+    }
+
+    private fun displaySplashScreenIcon() {
+        val fadeIn = AnimationUtils.loadAnimation(this, R.anim.fadein)
+        binding.ivNewsFeedIcon.startAnimation(fadeIn)
     }
 
     private fun displaySplashScreenAnimation() {
