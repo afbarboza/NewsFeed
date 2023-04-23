@@ -9,12 +9,15 @@ class Helper {
     companion object {
 
         const val ARTICLE_PARAM = "article"
+        const val NEWS_PROVIDER_NAME_PARAM = "news_provider"
+
         private const val DATE_PATTERN = "yyyy-MM-dd'T'HH:mm"
         private const val DATE_START = 0
         private const val DATE_END = 16
 
-        const val API_PAGE_SIZE = 10
+        const val API_PAGE_SIZE = 4
         const val API_STARTING_PAGE = 1
+        const val API_PREFETCH_DISTANCE = 1
 
         const val INVALID_TIMESTAMP: Long = -1
 

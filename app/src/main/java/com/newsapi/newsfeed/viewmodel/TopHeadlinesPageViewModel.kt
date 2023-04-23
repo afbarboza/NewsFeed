@@ -11,6 +11,8 @@ import androidx.paging.Pager
 import androidx.paging.liveData
 import androidx.paging.cachedIn
 import com.newsapi.newsfeed.BuildConfig
+import com.newsapi.newsfeed.helpers.Helper.Companion.API_PAGE_SIZE
+import com.newsapi.newsfeed.helpers.Helper.Companion.API_PREFETCH_DISTANCE
 import com.newsapi.newsfeed.model.Article
 import com.newsapi.newsfeed.repository.TopHeadlinesPageRepository
 import kotlinx.coroutines.CoroutineScope
@@ -23,30 +25,14 @@ class TopHeadlinesPageViewModel(
 )
     : ViewModel() {
         val items: LiveData<PagingData<Article>> = Pager(
-            config = PagingConfig(pageSize = PAGE_SIZE, prefetchDistance = 1, enablePlaceholders = false),
-            pagingSourceFactory = { repository.getHeadlinesPagingSource() }
+            config = PagingConfig(pageSize = API_PAGE_SIZE,
+                prefetchDistance = API_PREFETCH_DISTANCE,
+                enablePlaceholders = false),
+                pagingSourceFactory = { repository.getHeadlinesPagingSource() }
         )
             .liveData
             .cachedIn(viewModelScope)
 
         private val _newsProviderName: MutableLiveData<String> = MutableLiveData()
         val newsProviderName:  LiveData<String> = _newsProviderName
-
-    fun getHeadlinesPagingSource() {
-        CoroutineScope(Dispatchers.IO).launch {
-            val response = repository.getAllSources()
-            if (response.body() != null) {
-                val allSources = response.body()!!.sources
-                if (!allSources.isNullOrEmpty()) {
-                    val currentSource = allSources.first {
-                        it.id == BuildConfig.source_id
-                    }
-
-                    withContext(Dispatchers.Main) {
-                        _newsProviderName.value = currentSource.name
-                    }
-                }
-            }
-        }
-    }
 }

@@ -16,6 +16,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.newsapi.newsfeed.Injection
 import com.newsapi.newsfeed.R
 import com.newsapi.newsfeed.databinding.ActivityMainBinding
+import com.newsapi.newsfeed.helpers.Helper.Companion.NEWS_PROVIDER_NAME_PARAM
 import com.newsapi.newsfeed.viewmodel.TopHeadlinesPageViewModel
 import kotlinx.coroutines.launch
 
@@ -41,7 +42,6 @@ class MainActivity : AppCompatActivity() {
         initHeadlinesDataListener()
         initLoadingStateListener()
         initNewsProviderName()
-        topHeadlinesPageViewModel.getHeadlinesPagingSource()
     }
 
     private fun disableDarkMode() {
@@ -99,9 +99,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initNewsProviderName() {
-        topHeadlinesPageViewModel.newsProviderName.observe(this) {
-            binding.tvSourceName.text = it
-        }
+        val sourceName = intent.getStringExtra(NEWS_PROVIDER_NAME_PARAM)
+        binding.tvSourceName.text = sourceName
     }
 
     private fun displayErrorState() {

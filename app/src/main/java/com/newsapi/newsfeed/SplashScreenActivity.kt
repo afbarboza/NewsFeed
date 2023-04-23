@@ -9,6 +9,8 @@ import android.net.NetworkCapabilities.NET_CAPABILITY_VALIDATED
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.Animation.AnimationListener
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.biometric.BiometricManager
@@ -16,29 +18,52 @@ import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
 import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_WEAK
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.newsapi.newsfeed.databinding.ActivitySplashScreenBinding
+import com.newsapi.newsfeed.helpers.Helper.Companion.NEWS_PROVIDER_NAME_PARAM
 import com.newsapi.newsfeed.view.MainActivity
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import com.newsapi.newsfeed.viewmodel.SourcesViewModel
+import com.newsapi.newsfeed.viewmodel.SourcesViewModelFactory
 
 class SplashScreenActivity : AppCompatActivity() {
 
 
     private lateinit var binding: ActivitySplashScreenBinding
+    private lateinit var sourcesViewModel: SourcesViewModel
+
+    private var newsProvider: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        initViewModel()
+        initDataListeners()
         initViews()
     }
 
-    private fun initViews() {
-        displaySplashScreenIcon()
+    private fun initViewModel() {
+       val viewModelFactory = SourcesViewModelFactory( Injection.provideTopHeadlinesPageRepository() )
+        sourcesViewModel = ViewModelProvider(this, viewModelFactory)
+            .get(SourcesViewModel::class.java)
 
+    }
+
+    private fun initDataListeners() {
+        sourcesViewModel.errorStatus.observe(this) { error ->
+            if (error) {
+                displayErrorMessage()
+            }
+        }
+
+        sourcesViewModel.newsProviderName.observe(this) { newsProviderName ->
+            this.newsProvider = newsProviderName
+        }
+
+    }
+
+    private fun initViews() {
         val isConnected = isInternetAvailable()
         if (!isConnected) {
             displayErrorMessage()
@@ -47,18 +72,26 @@ class SplashScreenActivity : AppCompatActivity() {
         }
     }
 
-    private fun displaySplashScreenIcon() {
+    private fun displaySplashScreenAnimation() {
         val fadeIn = AnimationUtils.loadAnimation(this, R.anim.fadein)
+
+        fadeIn.setAnimationListener(object : AnimationListener {
+            override fun onAnimationStart(p0: Animation?) {
+                initData()
+            }
+
+            override fun onAnimationEnd(p0: Animation?) {
+                checkBiometricAuth()
+            }
+
+            override fun onAnimationRepeat(p0: Animation?) {}
+        })
+
         binding.ivNewsFeedIcon.startAnimation(fadeIn)
     }
 
-    private fun displaySplashScreenAnimation() {
-        /*TODO setup splash screen animation */
-        CoroutineScope(Dispatchers.Main).launch {
-            delay(2500)
-            // navigateToMainActivity()
-            checkBiometricAuth()
-        }
+    private fun initData() {
+        sourcesViewModel.getHeadlinesPagingSource()
     }
 
     private fun isInternetAvailable(): Boolean {
@@ -99,19 +132,23 @@ class SplashScreenActivity : AppCompatActivity() {
             .build()
 
         val executor = ContextCompat.getMainExecutor(this)
-        val callback = BiometricFinferprintCallback(binding)
+        val callback = BiometricFingerprintCallback(binding)
         val biometricPrompt = BiometricPrompt(this, executor, callback)
         biometricPrompt.authenticate(promptInfo)
 
     }
 
     private fun navigateToMainActivity() {
-        /* FETCH SOURCES DATA */
         val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
+        if (newsProvider != "") {
+            intent.putExtra(NEWS_PROVIDER_NAME_PARAM, newsProvider)
+            startActivity(intent)
+        } else {
+            displayErrorMessage()
+        }
     }
 
-    private inner class BiometricFinferprintCallback(val binding: ActivitySplashScreenBinding)
+    private inner class BiometricFingerprintCallback(val binding: ActivitySplashScreenBinding)
         : BiometricPrompt.AuthenticationCallback() {
         override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
             super.onAuthenticationError(errorCode, errString)
@@ -125,7 +162,7 @@ class SplashScreenActivity : AppCompatActivity() {
 
         override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
             super.onAuthenticationSucceeded(result)
-            Toast.makeText(binding.root.context, "YEAAAAAHHH", Toast.LENGTH_LONG).show()
+            navigateToMainActivity()
         }
 
     }
