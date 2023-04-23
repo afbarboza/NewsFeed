@@ -8,7 +8,6 @@ import com.newsapi.newsfeed.model.SourcesList
 import com.newsapi.newsfeed.model.TopHeadlinesPage
 import com.newsapi.newsfeed.networking.RetrofitInstance
 import com.newsapi.newsfeed.networking.TopHeadlinesPageService
-import com.newsapi.newsfeed.repository.HeadlinesPagingSource
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test

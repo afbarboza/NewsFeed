@@ -13,8 +13,8 @@ class Helper {
         private const val DATE_START = 0
         private const val DATE_END = 16
 
-        val API_PAGE_SIZE = 10
-        val API_STARTING_PAGE = 1
+        const val API_PAGE_SIZE = 10
+        const val API_STARTING_PAGE = 1
 
         fun formatDate(dateStr: String): String {
             return try {

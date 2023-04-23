@@ -45,13 +45,13 @@ class SplashScreenActivity : AppCompatActivity() {
         val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val capability = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
 
-        if (capability == null) {
-            return false
+        return if (capability != null) {
+            val netCapabilityInternet = capability.hasCapability(NET_CAPABILITY_INTERNET)
+            val netCapabilityValidated = capability.hasCapability(NET_CAPABILITY_VALIDATED)
+            return netCapabilityInternet && netCapabilityValidated
+        } else {
+            false
         }
-
-        val netCapabilityInternet = capability.hasCapability(NET_CAPABILITY_INTERNET)
-        val netCapabilityValidated = capability.hasCapability(NET_CAPABILITY_VALIDATED)
-        return netCapabilityInternet && netCapabilityValidated
     }
 
     private fun displayErrorMessage() {
