@@ -41,7 +41,7 @@ class DetailsActivity : AppCompatActivity() {
 
     private fun initViewModel(article: Article?) {
         if (article == null) {
-            displayError()
+            displayErrorState()
             return
         }
 
@@ -60,7 +60,7 @@ class DetailsActivity : AppCompatActivity() {
         }
     }
 
-    private fun displayError() {
+    private fun displayErrorState() {
         Snackbar.make(binding.root, R.string.error_loading_data, Snackbar.LENGTH_LONG)
             .show()
     }

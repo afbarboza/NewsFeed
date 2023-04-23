@@ -17,8 +17,6 @@ class HeadlinesPagingSource(private val topHeadlinesPageService:
 
     private var nextPageNumber: Int = API_STARTING_PAGE
 
-    private var nextKey: Int? = null
-
     override fun getRefreshKey(state: PagingState<Int, Article>): Int? {
         return null
     }
