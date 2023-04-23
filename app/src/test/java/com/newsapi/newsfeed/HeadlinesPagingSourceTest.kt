@@ -5,7 +5,6 @@ import com.newsapi.newsfeed.TestHelper.mockNewArticle
 import com.newsapi.newsfeed.helpers.Helper.Companion.API_PAGE_SIZE
 import com.newsapi.newsfeed.helpers.Helper.Companion.API_STARTING_PAGE
 import com.newsapi.newsfeed.model.Article
-import com.newsapi.newsfeed.model.Source
 import com.newsapi.newsfeed.model.SourcesList
 import com.newsapi.newsfeed.model.TopHeadlinesPage
 import com.newsapi.newsfeed.networking.RetrofitInstance

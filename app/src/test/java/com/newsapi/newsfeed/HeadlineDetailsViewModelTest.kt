@@ -4,7 +4,6 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.ViewModelProvider
 import com.newsapi.newsfeed.TestHelper.mockNewArticle
 import com.newsapi.newsfeed.model.Article
-import com.newsapi.newsfeed.model.Source
 import com.newsapi.newsfeed.view.DetailsActivity
 import com.newsapi.newsfeed.viewmodel.HeadlineDetailsViewModel
 import com.newsapi.newsfeed.viewmodel.HeadlineDetailsViewModelFactory

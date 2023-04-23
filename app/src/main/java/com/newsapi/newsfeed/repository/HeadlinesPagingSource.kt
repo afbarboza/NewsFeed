@@ -12,7 +12,8 @@ import com.newsapi.newsfeed.networking.TopHeadlinesPageService
 import retrofit2.Response
 import kotlin.math.ceil
 
-class HeadlinesPagingSource(private val topHeadlinesPageService:  TopHeadlinesPageService): PagingSource<Int, Article>() {
+class HeadlinesPagingSource(private val topHeadlinesPageService:
+                            TopHeadlinesPageService): PagingSource<Int, Article>() {
 
     private var nextPageNumber: Int = API_STARTING_PAGE
 
@@ -76,7 +77,7 @@ class HeadlinesPagingSource(private val topHeadlinesPageService:  TopHeadlinesPa
 
 
 
-    @Suppress("LongMethod")
+    @Suppress("LongMethod, ReturnCount")
     private fun hasReachedAllPages(response: Response<TopHeadlinesPage>): Boolean {
         val body = response.body()
         val totalResults = body?.totalResults

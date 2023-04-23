@@ -9,7 +9,6 @@ import com.newsapi.newsfeed.model.TopHeadlinesPage
 import com.newsapi.newsfeed.networking.RetrofitInstance
 import com.newsapi.newsfeed.networking.TopHeadlinesPageService
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test

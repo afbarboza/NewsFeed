@@ -89,4 +89,7 @@ class MainActivity : AppCompatActivity() {
         binding.rvNewsList.adapter = adapter
         binding.rvNewsList.layoutManager = LinearLayoutManager(binding.rvNewsList.context)
     }
+
+
+
 }
