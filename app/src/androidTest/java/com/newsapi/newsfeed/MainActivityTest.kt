@@ -43,6 +43,12 @@ class MainActivityTest {
             expectedSource = "BBC News"
         } else if (BuildConfig.FLAVOR.equals("elMundo")) {
             expectedSource = "El Mundo"
+        } else if (BuildConfig.FLAVOR.equals("cnnNews")) {
+            expectedSource = "CNN"
+        } else if (BuildConfig.FLAVOR.equals("footballItalia")) {
+            expectedSource = "Football Italia"
+        } else if (BuildConfig.FLAVOR.equals("hackerNews")) {
+            expectedSource = "Hacker News"
         }
 
         onView(withId(R.id.tvSourceName))

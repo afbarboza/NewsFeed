@@ -1,7 +1,8 @@
 package com.newsapi.newsfeed
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.paging.PagingSource
+import com.newsapi.newsfeed.helpers.Helper.Companion.API_PAGE_SIZE
+import com.newsapi.newsfeed.helpers.Helper.Companion.API_STARTING_PAGE
 import com.newsapi.newsfeed.model.Article
 import com.newsapi.newsfeed.model.Source
 import com.newsapi.newsfeed.model.SourcesList
@@ -10,10 +11,8 @@ import com.newsapi.newsfeed.networking.RetrofitInstance
 import com.newsapi.newsfeed.networking.TopHeadlinesPageService
 import com.newsapi.newsfeed.repository.HeadlinesPagingSource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
-import org.junit.Rule
 import org.junit.Test
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -32,8 +31,8 @@ class HeadlinesPagingSourceTest {
         val expectedResponse = retrofitInstance.fetchTopHeadlines(
             BuildConfig.API_KEY,
             BuildConfig.source_id,
-            HeadlinesPagingSource.STARTING_PAGE,
-            HeadlinesPagingSource.PAGE_SIZE
+            API_STARTING_PAGE,
+            API_PAGE_SIZE
         )
 
         val expected = PagingSource.LoadResult.Page(

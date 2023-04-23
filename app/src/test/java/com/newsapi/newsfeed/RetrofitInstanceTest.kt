@@ -1,5 +1,7 @@
 package com.newsapi.newsfeed
 
+import com.newsapi.newsfeed.helpers.Helper.Companion.API_PAGE_SIZE
+import com.newsapi.newsfeed.helpers.Helper.Companion.API_STARTING_PAGE
 import com.newsapi.newsfeed.model.Article
 import com.newsapi.newsfeed.model.Source
 import com.newsapi.newsfeed.model.SourcesList
@@ -9,7 +11,6 @@ import com.newsapi.newsfeed.networking.TopHeadlinesPageService
 import com.newsapi.newsfeed.repository.HeadlinesPagingSource
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
-import org.junit.BeforeClass
 import org.junit.Test
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -84,8 +85,8 @@ class RetrofitInstanceTest {
             val response = service.fetchTopHeadlines(
                 BuildConfig.API_KEY,
                 BuildConfig.source_id,
-                HeadlinesPagingSource.STARTING_PAGE,
-                HeadlinesPagingSource.PAGE_SIZE
+                API_STARTING_PAGE,
+                API_PAGE_SIZE
             )
 
             val isSuccessfull = response.isSuccessful
@@ -152,10 +153,7 @@ class RetrofitInstanceTest {
         topHeadlinesPage.articles.isNullOrEmpty()
 
     private fun isHeadlineMatchingSource(headline: Article?): Boolean {
-        if (headline == null) {
-            return false
-        }
-
-        return headline.source?.id == BuildConfig.source_id
+        return headline != null &&
+                headline.source?.id == BuildConfig.source_id
     }
 }

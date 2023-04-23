@@ -28,7 +28,7 @@ class ModelTest {
 
     @Test
     fun topHeadlinesPage_returnsNewTopHeadlinesPage() {
-        val list = listOf<Article>(mockNewArticle(), mockNewArticle(), mockNewArticle())
+        val list = mutableListOf<Article>(mockNewArticle(), mockNewArticle(), mockNewArticle())
         val topHeadlinesPage = TopHeadlinesPage(list, "ok", 10)
         assert(topHeadlinesPage.articles?.size == 3)
     }

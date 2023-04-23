@@ -1,16 +1,13 @@
 package com.newsapi.newsfeed
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.newsapi.newsfeed.model.Article
 import com.newsapi.newsfeed.model.Source
 import com.newsapi.newsfeed.view.DetailsActivity
 import com.newsapi.newsfeed.viewmodel.HeadlineDetailsViewModel
 import com.newsapi.newsfeed.viewmodel.HeadlineDetailsViewModelFactory
-import com.newsapi.newsfeed.viewmodel.TopHeadlinesPageViewModel
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

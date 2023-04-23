@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-parcelize'
+    id "io.gitlab.arturbosch.detekt" version "1.18.0"
 }
 
 android {
@@ -138,4 +139,9 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:3.8.0'
     testImplementation 'org.mockito:mockito-inline:2.13.0'
     testImplementation 'org.robolectric:robolectric:4.9'
+}
+
+detekt {
+    config = files("../config/detekt/detekt.yml")
+    buildUponDefaultConfig = true
 }

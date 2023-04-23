@@ -3,25 +3,18 @@ package com.newsapi.newsfeed.repository
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.newsapi.newsfeed.BuildConfig
+import com.newsapi.newsfeed.helpers.Helper.Companion.API_PAGE_SIZE
+import com.newsapi.newsfeed.helpers.Helper.Companion.API_STARTING_PAGE
 import com.newsapi.newsfeed.helpers.Helper.Companion.convertStringDateToTimestamp
 import com.newsapi.newsfeed.model.Article
 import com.newsapi.newsfeed.model.TopHeadlinesPage
 import com.newsapi.newsfeed.networking.TopHeadlinesPageService
-import kotlinx.coroutines.delay
 import retrofit2.Response
 import kotlin.math.ceil
 
 class HeadlinesPagingSource(private val topHeadlinesPageService:  TopHeadlinesPageService): PagingSource<Int, Article>() {
 
-    /**
-     * The News Api paging starts at 1 (a page of value 0 will return the same as 1)
-     */
-    companion object {
-        val PAGE_SIZE = 10
-        val STARTING_PAGE = 1
-    }
-
-    private var nextPageNumber: Int = STARTING_PAGE
+    private var nextPageNumber: Int = API_STARTING_PAGE
 
     override fun getRefreshKey(state: PagingState<Int, Article>): Int? {
         return null
@@ -30,18 +23,14 @@ class HeadlinesPagingSource(private val topHeadlinesPageService:  TopHeadlinesPa
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Article> {
         return try {
 
-            nextPageNumber = params.key ?: STARTING_PAGE
-
-            if (nextPageNumber != STARTING_PAGE) {
-                delay(3_000L)
-            }
+            nextPageNumber = params.key ?: API_STARTING_PAGE
 
             val response = topHeadlinesPageService
                 .fetchTopHeadlines(
                     BuildConfig.API_KEY,
                     BuildConfig.source_id,
                     nextPageNumber,
-                    PAGE_SIZE)
+                    API_PAGE_SIZE)
 
             if (isErrorResponse(response)) {
                 throw Exception("")
@@ -82,7 +71,7 @@ class HeadlinesPagingSource(private val topHeadlinesPageService:  TopHeadlinesPa
 
     private fun getNumberOfNecessaryPages(numberOfHeadlinesAvailable: Int): Int {
         val fNumberOfHeadlinesAvailable = numberOfHeadlinesAvailable.toFloat()
-        val fPageSize = PAGE_SIZE.toFloat()
+        val fPageSize = API_PAGE_SIZE.toFloat()
         val fNecessaryPages: Float = fNumberOfHeadlinesAvailable / fPageSize
         return ceil(fNecessaryPages).toInt()
     }
@@ -100,5 +89,4 @@ class HeadlinesPagingSource(private val topHeadlinesPageService:  TopHeadlinesPa
                 || response.errorBody() != null
                 || response.body()?.status != "ok"
     }
-
 }
