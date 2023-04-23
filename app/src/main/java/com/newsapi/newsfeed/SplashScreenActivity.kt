@@ -3,6 +3,7 @@ package com.newsapi.newsfeed
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET
 import android.net.NetworkCapabilities.NET_CAPABILITY_VALIDATED
 import androidx.appcompat.app.AppCompatActivity
@@ -24,7 +25,10 @@ class SplashScreenActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        initViews()
+    }
 
+    private fun initViews() {
         val isConnected = isInternetAvailable()
         if (!isConnected) {
             displayErrorMessage()
@@ -37,28 +41,33 @@ class SplashScreenActivity : AppCompatActivity() {
         /*TODO setup splash screen animation */
         CoroutineScope(Dispatchers.Main).launch {
             delay(2500)
-            navigateToHeadlineNews()
+            navigateToMainActivity()
         }
     }
 
+    @Suppress("LongMethod")
     private fun isInternetAvailable(): Boolean {
-        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val capability = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+        val capability = getInternetCapability()
 
         return if (capability != null) {
             val netCapabilityInternet = capability.hasCapability(NET_CAPABILITY_INTERNET)
             val netCapabilityValidated = capability.hasCapability(NET_CAPABILITY_VALIDATED)
-            return netCapabilityInternet && netCapabilityValidated
+            netCapabilityInternet && netCapabilityValidated
         } else {
             false
         }
+    }
+
+    private fun getInternetCapability():  NetworkCapabilities? {
+        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        return connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
     }
 
     private fun displayErrorMessage() {
         binding.tvErrorInternet.visibility = View.VISIBLE
     }
 
-    private fun navigateToHeadlineNews() {
+    private fun navigateToMainActivity() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
     }

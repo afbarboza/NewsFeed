@@ -1,6 +1,7 @@
 package com.newsapi.newsfeed
 
 import androidx.paging.PagingSource
+import com.newsapi.newsfeed.TestHelper.mockNewArticle
 import com.newsapi.newsfeed.helpers.Helper.Companion.API_PAGE_SIZE
 import com.newsapi.newsfeed.helpers.Helper.Companion.API_STARTING_PAGE
 import com.newsapi.newsfeed.model.Article
@@ -20,13 +21,12 @@ import retrofit2.Retrofit
 @ExperimentalCoroutinesApi
 class HeadlinesPagingSourceTest {
 
+    @Suppress("LongMethod")
     @Test
     fun `load returns page when on successful load of item keyed data`() = runTest {
         val retrofitInstance = TopHeadlinesPageServiceImpl(
             RetrofitInstance.getInstance()
         )
-
-        val pagingSource = HeadlinesPagingSource(retrofitInstance)
 
         val expectedResponse = retrofitInstance.fetchTopHeadlines(
             BuildConfig.API_KEY,
@@ -41,7 +41,8 @@ class HeadlinesPagingSourceTest {
             nextKey =  2
         )
 
-        val actual = pagingSource.load(
+        val actualPagingSource = HeadlinesPagingSource(retrofitInstance)
+        val actual = actualPagingSource.load(
             PagingSource.LoadParams.Refresh(
                 key = null,
                 placeholdersEnabled = false,
@@ -51,7 +52,6 @@ class HeadlinesPagingSourceTest {
 
         assertEquals(expected, actual)
     }
-
 
     class TopHeadlinesPageServiceImpl
     constructor(private val retrofit: Retrofit) : TopHeadlinesPageService {
@@ -84,19 +84,5 @@ class HeadlinesPagingSourceTest {
         override suspend fun fetchAllSources(apiKey: String): Response<SourcesList> {
             return endpoint.fetchAllSources(apiKey)
         }
-
-        private fun mockNewArticle(): Article {
-            return Article(
-                "Argaam",
-                null,
-                "Malicious encryptors for Apple computers could herald new risks for macOS users.",
-                "2023-04-18T13:21:16+00:00",
-                Source("ars-technica", "Ars Technica"),
-                "Apple’s Macs have long escaped ransomware, but that may be changing",
-                "https://www.wired.com/story/apple-mac-lockbit-ransomware-samples/",
-                "\"https://cdn.arstechnica.net/wp-content/uploads/2023/04/macbook-pink-760x380.jpg"
-            )
-        }
-
     }
 }

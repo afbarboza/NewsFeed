@@ -2,6 +2,7 @@ package com.newsapi.newsfeed
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.ViewModelProvider
+import com.newsapi.newsfeed.TestHelper.mockNewArticle
 import com.newsapi.newsfeed.model.Article
 import com.newsapi.newsfeed.model.Source
 import com.newsapi.newsfeed.view.DetailsActivity
@@ -50,18 +51,4 @@ class HeadlineDetailsViewModelTest {
 
         assertEquals(article, headlineDetailsViewModel.articleData.value)
     }
-
-    private fun mockNewArticle(): Article {
-        return Article(
-            "Argaam",
-            null,
-            "Malicious encryptors for Apple computers could herald new risks for macOS users.",
-            "2023-04-18T13:21:16+00:00",
-            Source("ars-technica", "Ars Technica"),
-            "Apple’s Macs have long escaped ransomware, but that may be changing",
-            "https://www.wired.com/story/apple-mac-lockbit-ransomware-samples/",
-            "\"https://cdn.arstechnica.net/wp-content/uploads/2023/04/macbook-pink-760x380.jpg"
-        )
-    }
-
 }

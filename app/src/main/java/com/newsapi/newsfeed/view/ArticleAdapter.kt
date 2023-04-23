@@ -13,6 +13,7 @@ class ArticleAdapter: PagingDataAdapter<Article, ArticleViewHolder>(DIFF_ITEM) {
         holder.bind(article!!)
     }
 
+    @Suppress("LongMethod")
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleViewHolder {
         val layoutInflater: LayoutInflater = LayoutInflater.from(parent.context)
 

@@ -68,12 +68,16 @@ class DetailsActivity : AppCompatActivity() {
     private fun updateHeadlineImage(article: Article?) {
         if (article?.urlToImage == null) {
             binding.ivHeadlineDetailsImage.visibility = View.GONE
-            return
+        } else {
+            loadUrlIntoImageView(article)
         }
+    }
 
+    private fun loadUrlIntoImageView(article: Article) {
         Glide.with(binding.root)
             .load(article.urlToImage)
             .diskCacheStrategy(DiskCacheStrategy.DATA)
             .into(binding.ivHeadlineDetailsImage)
     }
+
 }

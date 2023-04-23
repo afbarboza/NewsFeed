@@ -18,7 +18,8 @@ object RetrofitInstance {
         this.addInterceptor(interceptor)
     }.build()
 
-    public fun getInstance() : Retrofit {
+    @Suppress("LongMethod")
+    fun getInstance() : Retrofit {
         if (retrofitInstance == null) {
             retrofitInstance = Retrofit.Builder()
                 .baseUrl(BASE_URL)

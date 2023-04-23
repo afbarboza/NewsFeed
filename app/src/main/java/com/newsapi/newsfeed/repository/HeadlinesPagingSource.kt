@@ -16,35 +16,24 @@ class HeadlinesPagingSource(private val topHeadlinesPageService:  TopHeadlinesPa
 
     private var nextPageNumber: Int = API_STARTING_PAGE
 
+    private var nextKey: Int? = null
+
     override fun getRefreshKey(state: PagingState<Int, Article>): Int? {
         return null
     }
 
+    @Suppress("LongMethod")
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Article> {
         return try {
-
-            nextPageNumber = params.key ?: API_STARTING_PAGE
-
-            val response = topHeadlinesPageService
-                .fetchTopHeadlines(
-                    BuildConfig.API_KEY,
-                    BuildConfig.source_id,
-                    nextPageNumber,
-                    API_PAGE_SIZE)
+            updatePageNumber(params)
+            val response = fetchTopHeadlines()
 
             if (isErrorResponse(response)) {
                 throw Exception("")
             }
 
-            var nextKey: Int? = null
-            if (!hasReachedAllPages(response)) {
-                nextKey = nextPageNumber + 1
-            }
-
-            val list = getListOfHeadlines(response)
-            list.sortByDescending {
-                convertStringDateToTimestamp(it.publishedAt)
-            }
+            val nextKey = getNextPagingSourceKey(response)
+            val list = sortHeadlinesByDate(response)
 
              LoadResult.Page(
                 data = list,
@@ -56,6 +45,38 @@ class HeadlinesPagingSource(private val topHeadlinesPageService:  TopHeadlinesPa
         }
     }
 
+    private fun sortHeadlinesByDate(response: Response<TopHeadlinesPage>):  MutableList<Article> {
+        val list = getListOfHeadlines(response)
+        list.sortByDescending {
+            convertStringDateToTimestamp(it.publishedAt)
+        }
+
+        return list
+    }
+
+    private fun updatePageNumber(params: LoadParams<Int>) {
+        nextPageNumber = params.key ?: API_STARTING_PAGE
+    }
+
+    private fun getNextPagingSourceKey(response: Response<TopHeadlinesPage>): Int? {
+        var nextKey: Int? = null
+        if (!hasReachedAllPages(response)) {
+            nextKey = nextPageNumber + 1
+        }
+
+        return nextKey
+    }
+
+    private suspend fun fetchTopHeadlines() = topHeadlinesPageService.fetchTopHeadlines(
+            BuildConfig.API_KEY,
+            BuildConfig.source_id,
+            nextPageNumber,
+            API_PAGE_SIZE
+    )
+
+
+
+    @Suppress("LongMethod")
     private fun hasReachedAllPages(response: Response<TopHeadlinesPage>): Boolean {
         val body = response.body()
         val totalResults = body?.totalResults

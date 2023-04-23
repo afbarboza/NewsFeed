@@ -8,7 +8,9 @@ import com.newsapi.newsfeed.model.SourcesList
 import com.newsapi.newsfeed.model.TopHeadlinesPage
 import com.newsapi.newsfeed.networking.RetrofitInstance
 import com.newsapi.newsfeed.networking.TopHeadlinesPageService
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
 import retrofit2.Response
@@ -22,6 +24,7 @@ import retrofit2.Retrofit
  *  Please, be aware that this class doest not mock any data as it performs
  *  real API endpoint calls. Therefore, it relies on internet connectivity.
  */
+@OptIn(ExperimentalCoroutinesApi::class)
 class RetrofitInstanceTest {
 
     private lateinit var service: TopHeadlinesPageServiceImpl
@@ -39,8 +42,8 @@ class RetrofitInstanceTest {
     }
 
      @Test
-     fun `when call fetchAllSources with a successfull response, check for response body`() {
-        runBlocking {
+     fun `when call fetchAllSources with a successfull response, check for response body`() =
+        runTest {
             val response = service.fetchAllSources(BuildConfig.API_KEY)
 
             val isSuccessfull = response.isSuccessful
@@ -56,11 +59,10 @@ class RetrofitInstanceTest {
                 assert(true)
             }
         }
-    }
 
     @Test
-    fun `when call fetchAllSources with a error response, check for error body`() {
-        runBlocking {
+    fun `when call fetchAllSources with a error response, check for error body`() =
+        runTest {
             val response = service.fetchAllSources(BuildConfig.API_KEY)
 
             val isSuccessfull = response.isSuccessful
@@ -76,11 +78,10 @@ class RetrofitInstanceTest {
                 assert(true)
             }
         }
-    }
 
     @Test
-    fun `when call fetchTopHeadlines for a given source, check if headline matches the source`() {
-        runBlocking {
+    fun `when call fetchTopHeadlines for a given source, check if headline matches the source`() =
+        runTest {
             val response = service.fetchTopHeadlines(
                 BuildConfig.API_KEY,
                 BuildConfig.source_id,
@@ -106,7 +107,6 @@ class RetrofitInstanceTest {
             }
 
         }
-    }
 
     /**
      * This is a helper class to make possible test RetrofitInstance and also

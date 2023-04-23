@@ -16,6 +16,9 @@ class Helper {
         const val API_PAGE_SIZE = 10
         const val API_STARTING_PAGE = 1
 
+        const val INVALID_TIMESTAMP: Long = -1
+
+        @Suppress("LongMethod")
         fun formatDate(dateStr: String): String {
             return try {
                 val dateTime = convertStringToLocalDateTime(dateStr)
@@ -25,6 +28,7 @@ class Helper {
             }
         }
 
+        @Suppress("LongMethod")
         fun convertStringDateToTimestamp(dateStr: String): Long {
             return try {
                 val dateTime = convertStringToLocalDateTime(dateStr)
@@ -32,7 +36,7 @@ class Helper {
                     .toInstant(ZoneOffset.UTC)
                     .toEpochMilli()
             } catch (e: java.lang.Exception) {
-                -1
+                INVALID_TIMESTAMP
             }
         }
 

@@ -17,8 +17,8 @@ class ArticleViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(article: Article) {
         setupContent(article)
-        setupPublishedAt(article.publishedAt)
-        setupHeadlineImage(article)
+        setPublishedAt(article.publishedAt)
+        updateHeadlineImage(article)
         setupOnClickListener(article)
     }
 
@@ -27,25 +27,31 @@ class ArticleViewHolder(
         binding.tvHeadlineDescription.text = article.description ?: ""
     }
 
-    private fun setupPublishedAt(dateStr: String) {
+    private fun setPublishedAt(dateStr: String) {
         val dateStr = Helper.formatDate(dateStr)
         if (dateStr.isNullOrEmpty()) {
             binding.tvHeadlinePublishedAt.visibility = View.INVISIBLE
-            return
+        } else {
+            setupTvHeadlinePublishedAt(dateStr)
         }
+    }
 
+    private fun setupTvHeadlinePublishedAt(dateStr: String) {
         val publishedOn = binding.root.context.getString(
             R.string.published_on
         )
         binding.tvHeadlinePublishedAt.text = "$publishedOn $dateStr"
     }
 
-    private fun setupHeadlineImage(article: Article) {
+    private fun updateHeadlineImage(article: Article) {
         if (article.urlToImage == null) {
             binding.ivHeadlineImage.visibility = View.INVISIBLE
-            return
+        } else {
+            loadUrlIntoImageView(article)
         }
+    }
 
+    private fun loadUrlIntoImageView(article: Article) {
         Glide.with(binding.root)
             .load(article.urlToImage)
             .diskCacheStrategy(DiskCacheStrategy.DATA)
@@ -54,15 +60,17 @@ class ArticleViewHolder(
 
     private fun setupOnClickListener(article: Article) {
         binding.clHeadlinerContainer.setOnClickListener {
-            val context = binding.clHeadlinerContainer.context
-            val intent = Intent(context, DetailsActivity::class.java)
-
-            val extras = Bundle()
-            extras.putParcelable(ARTICLE_PARAM, article)
-
-            intent.putExtras(extras)
-            context.startActivity(intent)
+            navigateToDetailsActivity(article)
         }
+    }
+
+    private fun navigateToDetailsActivity(article: Article) {
+        val context = binding.clHeadlinerContainer.context
+        val intent = Intent(context, DetailsActivity::class.java)
+        val extras = Bundle()
+        extras.putParcelable(ARTICLE_PARAM, article)
+        intent.putExtras(extras)
+        context.startActivity(intent)
     }
 
 }
