@@ -9,6 +9,13 @@ import android.net.NetworkCapabilities.NET_CAPABILITY_VALIDATED
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
+import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
+import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_WEAK
+import androidx.biometric.BiometricPrompt
+import androidx.core.content.ContextCompat
+import com.google.android.material.snackbar.Snackbar
 import com.newsapi.newsfeed.databinding.ActivitySplashScreenBinding
 import com.newsapi.newsfeed.view.MainActivity
 import kotlinx.coroutines.CoroutineScope
@@ -41,7 +48,8 @@ class SplashScreenActivity : AppCompatActivity() {
         /*TODO setup splash screen animation */
         CoroutineScope(Dispatchers.Main).launch {
             delay(2500)
-            navigateToMainActivity()
+            // navigateToMainActivity()
+            checkBiometricAuth()
         }
     }
 
@@ -66,9 +74,52 @@ class SplashScreenActivity : AppCompatActivity() {
         binding.tvErrorInternet.visibility = View.VISIBLE
     }
 
+    private fun checkBiometricAuth() {
+        val biometricManager = BiometricManager.from(this)
+        when (biometricManager.canAuthenticate(BIOMETRIC_STRONG or BIOMETRIC_WEAK)) {
+            BiometricManager.BIOMETRIC_SUCCESS -> initAuthenticationFlow()
+            else -> navigateToMainActivity()
+        }
+    }
+
+    private fun initAuthenticationFlow() {
+        val promptInfo = BiometricPrompt.PromptInfo.Builder()
+            .setTitle(getString(R.string.biometric_auth_title))
+            .setSubtitle(getString(R.string.biometric_auth_subtitle))
+            .setAllowedAuthenticators(BIOMETRIC_STRONG)
+            .setNegativeButtonText(getString(R.string.biometric_auth_error))
+            .build()
+
+        val executor = ContextCompat.getMainExecutor(this)
+        val callback = BiometricFinferprintCallback(binding)
+        val biometricPrompt = BiometricPrompt(this, executor, callback)
+        biometricPrompt.authenticate(promptInfo)
+
+    }
+
     private fun navigateToMainActivity() {
+        /* FETCH SOURCES DATA */
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
+    }
+
+    private inner class BiometricFinferprintCallback(val binding: ActivitySplashScreenBinding)
+        : BiometricPrompt.AuthenticationCallback() {
+        override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
+            super.onAuthenticationError(errorCode, errString)
+            Snackbar.make(binding.root, R.string.biometric_auth_error, Toast.LENGTH_LONG).show()
+        }
+
+        override fun onAuthenticationFailed() {
+            super.onAuthenticationFailed()
+            Snackbar.make(binding.root, R.string.biometric_auth_error, Toast.LENGTH_LONG).show()
+        }
+
+        override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+            super.onAuthenticationSucceeded(result)
+            Toast.makeText(binding.root.context, "YEAAAAAHHH", Toast.LENGTH_LONG).show()
+        }
+
     }
 
 }

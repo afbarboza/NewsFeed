@@ -9,4 +9,7 @@
     <string name="error_loading_data">There is an error while trying to load the data. Please, try again.</string>
     <string name="error_internet_connectivity">Oops… looks like you don\'t have an internet connection.\n \n Please, try again.</string>
     <string name="error_generic">Oops… Looks like something went wrong.</string>
+    <string name="biometric_auth_title">Authenticate</string>
+    <string name="biometric_auth_subtitle">Use biometrics to continue</string>
+    <string name="biometric_auth_error">No match</string>
 </resources>
